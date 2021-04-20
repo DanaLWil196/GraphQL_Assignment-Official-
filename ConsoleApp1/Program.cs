@@ -6,11 +6,23 @@ using GraphQL.SystemTextJson;
 
 namespace ConsoleApp1
 {
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var schema = Schema.For(@"
+                type Query {
+                    hello: String
+                }
+            ");
+
+            var json = await schema.ExecuteAsync(_ =>
+            {
+                _.Query = "{ hello }";
+                _.Root = new { Hello = "Hello World!" };
+            });
+
+            Console.WriteLine(json);
         }
     }
 }
